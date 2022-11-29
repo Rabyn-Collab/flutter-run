@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/cupertino.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -17,10 +17,30 @@ class HomePage extends StatelessWidget {
           elevation: 0,
           title: Text('Hi John,', style: TextStyle(color: Colors.black),),
           actions: [
-
+           IconButton(
+               onPressed: (){},
+               icon: Icon(CupertinoIcons.search, color: Colors.black,)
+           ),
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              // padding: const EdgeInsets.all(10),
+              // padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: IconButton(
+                  onPressed: (){},
+                  icon: Icon(CupertinoIcons.bell_solid, color: Colors.black,)
+              ),
+            ),
           ],
         ),
-        body: Container()
+        body: Container(
+          child: Column(
+            children: [
+              Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: Image.asset('assets/book.jpg', height: 250, width: double.infinity)),
+            ],
+          ),
+        )
     );
   }
 }
