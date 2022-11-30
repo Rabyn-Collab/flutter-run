@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../models/book.dart';
+
 
 class HomePage extends StatelessWidget {
 
@@ -32,14 +34,38 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-        body: Container(
-          child: Column(
-            children: [
-              Container(
-                  margin: EdgeInsets.only(top: 10),
-                  child: Image.asset('assets/book.jpg', height: 250, width: double.infinity)),
-            ],
-          ),
+        body: Column(
+          children: [
+            Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Image.asset('assets/book.jpg', height: 250, width: double.infinity)),
+        Container(
+          margin: EdgeInsets.only(top: 10),
+          height: 300,
+         child: ListView.builder(
+           scrollDirection: Axis.horizontal,
+              itemCount: booksData.length,
+             itemBuilder: (context, index){
+                return Container(
+                  width: 350,
+                  child: Row(
+                    children: [
+                      Expanded(child: Image.network(booksData[index].imageUrl)),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(booksData[index].label, style: TextStyle(fontSize: 20),),
+                            Text(booksData[index].detail, style: TextStyle(fontSize: 20),),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+             }
+         ),
+        )
+          ],
         )
     );
   }
