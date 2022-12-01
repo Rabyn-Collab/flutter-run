@@ -34,33 +34,51 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-        body: Column(
+        body: ListView(
           children: [
             Container(
                 margin: EdgeInsets.only(top: 10),
                 child: Image.asset('assets/book.jpg', height: 250, width: double.infinity)),
         Container(
           margin: EdgeInsets.only(top: 10),
-          height: 300,
+          height: 260,
          child: ListView.builder(
            scrollDirection: Axis.horizontal,
               itemCount: booksData.length,
              itemBuilder: (context, index){
                 return Container(
-                  width: 350,
+                  margin: EdgeInsets.only(right: 7),
+                  padding: index == 0 ? EdgeInsets.only(left: 10): null,
+                  width: 390,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.network(booksData[index].imageUrl, width: 150,),
-                      SizedBox(width: 10,),
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.network(booksData[index].imageUrl, width: 140, fit: BoxFit.cover, height: 200,)),
                       Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Column(
-                            children: [
-                              Text(booksData[index].label, style: TextStyle(fontSize: 17),),
-                              Text(booksData[index].detail,maxLines: 4, style: TextStyle(fontSize: 16),),
-                            ],
+                        child: Card(
+                          elevation: 10,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20, left: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(booksData[index].label, style: TextStyle(fontSize: 17),),
+                                Text(booksData[index].detail,maxLines: 4, style: TextStyle(fontSize: 16),),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(booksData[index].rating),
+                                    TextButton(
+                                        onPressed: (){},
+                                        child: Text(booksData[index].genres)
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -69,7 +87,45 @@ class HomePage extends StatelessWidget {
                 );
              }
          ),
-        )
+        ),
+
+
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              height: 300,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: booksData.length,
+                  itemBuilder: (context, index){
+                    return Container(
+                      margin: EdgeInsets.only(right: 7),
+                      padding: index == 0 ? EdgeInsets.only(left: 10): null,
+                      width: 150,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.network(booksData[index].imageUrl, width: 140, fit: BoxFit.cover, height: 200,)),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, left: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(booksData[index].label, style: TextStyle(fontSize: 14),),
+                                TextButton(
+                                    onPressed: (){},
+                                    child: Text(booksData[index].genres)
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+              ),
+            )
           ],
         )
     );
