@@ -49,14 +49,19 @@ class HomePage extends StatelessWidget {
                 return Container(
                   width: 350,
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Expanded(child: Image.network(booksData[index].imageUrl)),
+                      Image.network(booksData[index].imageUrl, width: 150,),
+                      SizedBox(width: 10,),
                       Expanded(
-                        child: Column(
-                          children: [
-                            Text(booksData[index].label, style: TextStyle(fontSize: 20),),
-                            Text(booksData[index].detail, style: TextStyle(fontSize: 20),),
-                          ],
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: Column(
+                            children: [
+                              Text(booksData[index].label, style: TextStyle(fontSize: 17),),
+                              Text(booksData[index].detail,maxLines: 4, style: TextStyle(fontSize: 16),),
+                            ],
+                          ),
                         ),
                       ),
                     ],
