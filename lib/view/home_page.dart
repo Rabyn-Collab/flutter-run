@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutterrun/view/detail_page.dart';
+import 'package:get/get.dart';
 
 import '../models/book.dart';
 
@@ -46,43 +48,48 @@ class HomePage extends StatelessWidget {
            scrollDirection: Axis.horizontal,
               itemCount: booksData.length,
              itemBuilder: (context, index){
-                return Container(
-                  margin: EdgeInsets.only(right: 7),
-                  padding: index == 0 ? EdgeInsets.only(left: 10): null,
-                  width: 390,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Image.network(booksData[index].imageUrl, width: 140, fit: BoxFit.cover, height: 200,)),
-                      Expanded(
-                        child: Card(
-                          elevation: 10,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 20, left: 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(booksData[index].label, style: TextStyle(fontSize: 17),),
-                                Text(booksData[index].detail,maxLines: 4, style: TextStyle(fontSize: 16),),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(booksData[index].rating),
-                                    TextButton(
-                                        onPressed: (){},
-                                        child: Text(booksData[index].genres)
-                                    )
-                                  ],
-                                )
-                              ],
+                return InkWell(
+                  onTap: (){
+                   Get.to(() =>  DetailPage(booksData[index]), transition: Transition.leftToRight);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 7),
+                    padding: index == 0 ? EdgeInsets.only(left: 10): null,
+                    width: 390,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Image.network(booksData[index].imageUrl, width: 140, fit: BoxFit.cover, height: 200,)),
+                        Expanded(
+                          child: Card(
+                            elevation: 10,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 20, left: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(booksData[index].label, style: TextStyle(fontSize: 17),),
+                                  Text(booksData[index].detail,maxLines: 4, style: TextStyle(fontSize: 16),),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(booksData[index].rating),
+                                      TextButton(
+                                          onPressed: (){},
+                                          child: Text(booksData[index].genres)
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
              }

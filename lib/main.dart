@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterrun/view/home_page.dart';
+import 'package:flutterrun/view/sample.dart';
+import 'package:get/get.dart';
 
 
 
@@ -20,7 +22,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       // themeMode: ThemeMode.light,
       // theme: ThemeData.light().copyWith(
