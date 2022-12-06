@@ -25,18 +25,22 @@ final todoProvider = StateNotifierProvider<TodoProvider, List<Todo>>((ref) => To
 class TodoProvider extends StateNotifier<List<Todo>>{
   TodoProvider(super.state);
 
-final numbers = ['22'];
   addTodo(Todo todo){
-    state.add(todo);
-    state = [...state];
+    state = [...state, todo];
   }
 
   deleteTodo(Todo todo){
-   state.remove(todo);
+    state = state.where((element) => element.id != todo.id).toList();
+   // state.remove(todo);
+   // state = [...state];
   }
 
-  updateTodo(){
-
+  updateTodo(Todo todo, int index){
+    // state = [
+    //   for(final t in state) if(t == todo) todo else t
+    // ];
+      state[index] = todo;
+      state = [...state];
   }
 
 
