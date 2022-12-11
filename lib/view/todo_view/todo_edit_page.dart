@@ -5,10 +5,10 @@ import 'package:flutterrun/providers/todo_provider.dart';
 import 'package:get/get.dart';
 
 
-class EditPage extends StatelessWidget {
+class TodoEditPage extends StatelessWidget {
  final Todo todo;
  final int index;
- EditPage(this.todo, this.index);
+ TodoEditPage(this.todo, this.index);
 
   @override
   Widget build(BuildContext context) {

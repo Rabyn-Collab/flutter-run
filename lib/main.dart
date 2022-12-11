@@ -1,12 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterrun/providers/example_providers.dart';
+import 'package:flutterrun/services/movie_service.dart';
 import 'package:flutterrun/view/home_page.dart';
 import 'package:get/get.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'api.dart';
 
-void main() {
+
+Future<String> delaySome() async{
+ return Future.delayed(Duration(seconds: 5), (){
+   return 'hello world';
+  });
+}
+
+
+
+
+void main() async{
+ //  print('hello world');
+ // final m = await delaySome();
+ // print(m);
+
+
+   MovieService.getMovieByCategory(apiPath: Api.popularMovie, page: 1);
   runApp(ProviderScope(
       child: Home()
   )
@@ -27,17 +45,25 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home:  HomePage(),
     );
   }
 }
+
+
+
+
+
+
+
+
+
 
 class Counter extends StatelessWidget {
   const Counter({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print('build');
     return Scaffold(
         body: Container(
           child:  Consumer(
