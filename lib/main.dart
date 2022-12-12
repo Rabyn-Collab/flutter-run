@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterrun/models/movie_state.dart';
 import 'package:flutterrun/providers/example_providers.dart';
 import 'package:flutterrun/services/movie_service.dart';
 import 'package:flutterrun/view/home_page.dart';
@@ -16,15 +17,23 @@ Future<String> delaySome() async{
 }
 
 
-
+// MovieState newState = MovieState(err: '', isLoad: false, movies: []);
+//
+// void m(){
+//  newState =  newState.copyWith( err: 'hello', movieState: newState);
+// }
 
 void main() async{
+  // print(newState.err);
+  // m();
+  // print(newState.isLoad);
  //  print('hello world');
  // final m = await delaySome();
  // print(m);
 
 
-   MovieService.getMovieByCategory(apiPath: Api.popularMovie, page: 1);
+   // final response = await MovieService.getMovieByCategory(apiPath: Api.popularMovie, page: 1);
+   //   response.fold((l) => print(l), (r) => print(r));
   runApp(ProviderScope(
       child: Home()
   )

@@ -1,14 +1,13 @@
 import 'package:dio/dio.dart';
-
 import '../models/movie.dart';
+import 'package:dartz/dartz.dart';
 
 
 
 class MovieService{
 
-
   static Dio dio =  Dio();
-  static Future getMovieByCategory({required String apiPath, required int page}) async{
+  static Future<Either<String, List<Movie>>> getMovieByCategory({required String apiPath, required int page}) async{
       try{
      final response =  await dio.get(apiPath,
            queryParameters: {
@@ -16,10 +15,10 @@ class MovieService{
              'page': page
        });
      final newData = (response.data['results'] as List).map((e) => Movie.fromJson(e)).toList();
-     print(newData[0].title);
-
+      return Right(newData);
       }on DioError catch (err){
         print(err.message);
+      return  Left(err.message);
       }
   }
 
