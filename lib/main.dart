@@ -53,6 +53,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+     theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       home:  HomePage(),
     );

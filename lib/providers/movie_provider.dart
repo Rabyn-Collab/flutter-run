@@ -33,3 +33,65 @@ class PopularProvider extends StateNotifier<MovieState>{
   }
 
 }
+
+
+final topProvider = StateNotifierProvider<TopProvider, MovieState>((ref) => TopProvider(MovieState(
+    err: '',
+    isLoad: false,
+    movies: [],
+    apiPath: Api.topRatedMovie,
+    page: 1
+)));
+
+
+class TopProvider extends StateNotifier<MovieState>{
+  TopProvider(super.state){
+    getData();
+  }
+
+  Future<void> getData() async{
+    state = state.copyWith(movieState: state, isLoad: true);
+    final response = await MovieService.getMovieByCategory(apiPath: state.apiPath, page: state.page);
+    response.fold(
+            (l){
+          state = state.copyWith(movieState: state, err: l, isLoad: false);
+        },
+            (r){
+          state = state.copyWith(movieState: state, err: '', isLoad: false, movies: r);
+        }
+    );
+
+  }
+
+}
+
+
+final upcomingProvider = StateNotifierProvider<UpcomingProvider, MovieState>((ref) => UpcomingProvider(MovieState(
+    err: '',
+    isLoad: false,
+    movies: [],
+    apiPath: Api.upcomingMovie,
+    page: 1
+)));
+
+
+class UpcomingProvider extends StateNotifier<MovieState>{
+  UpcomingProvider(super.state){
+    getData();
+  }
+
+  Future<void> getData() async{
+    state = state.copyWith(movieState: state, isLoad: true);
+    final response = await MovieService.getMovieByCategory(apiPath: state.apiPath, page: state.page);
+    response.fold(
+            (l){
+          state = state.copyWith(movieState: state, err: l, isLoad: false);
+        },
+            (r){
+          state = state.copyWith(movieState: state, err: '', isLoad: false, movies: r);
+        }
+    );
+
+  }
+
+}
