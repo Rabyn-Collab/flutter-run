@@ -95,3 +95,34 @@ class UpcomingProvider extends StateNotifier<MovieState>{
   }
 
 }
+
+
+final latestProvider = StateNotifierProvider<LatestProvider, MovieState>((ref) => LatestProvider(MovieState(
+    err: '',
+    isLoad: false,
+    movies: [],
+    apiPath: Api.upcomingMovie,
+    page: 1
+)));
+
+
+class LatestProvider extends StateNotifier<MovieState>{
+  LatestProvider(super.state){
+    getData();
+  }
+
+  Future<void> getData() async{
+    state = state.copyWith(movieState: state, isLoad: true);
+    final response = await MovieService.getLatest(apiPath: state.apiPath);
+    response.fold(
+            (l){
+          state = state.copyWith(movieState: state, err: l, isLoad: false);
+        },
+            (r){
+          state = state.copyWith(movieState: state, err: '', isLoad: false, movies: [r]);
+        }
+    );
+
+  }
+
+}

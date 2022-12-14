@@ -22,5 +22,21 @@ class MovieService{
       }
   }
 
+  static Future<Either<String, Movie>> getLatest({required String apiPath}) async{
+    try{
+      final response =  await dio.get(apiPath,
+          queryParameters: {
+            'api_key': '2a0f926961d00c667e191a21c14461f8'
+          });
+      final newData =  Movie.fromJson(response.data);
+      return Right(newData);
+    }on DioError catch (err){
+
+      return  Left(err.message);
+    }
+  }
+
 
 }
+
+
