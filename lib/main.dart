@@ -24,6 +24,7 @@ Future<String> delaySome() async{
 // }
 
 void main() async{
+  await Future.delayed(Duration(milliseconds: 500));
   // print(newState.err);
   // m();
   // print(newState.isLoad);

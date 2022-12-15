@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutterrun/view/search_page.dart';
 import 'package:flutterrun/view/widgets/tabs_widget.dart';
+import 'package:get/get.dart';
 import '../providers/movie_provider.dart';
-
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 
 class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -24,7 +27,9 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('MovieShow', style: TextStyle(color: Colors.red, fontSize: 22, fontWeight: FontWeight.bold, letterSpacing: 1),),
-                    IconButton(onPressed: (){}, icon: Icon(Icons.search_outlined))
+                    IconButton(onPressed: (){
+                      Get.to(() => SearchPage(), transition: Transition.leftToRight);
+                    }, icon: Icon(Icons.search_outlined))
                   ],
                 ),
               ),
@@ -44,9 +49,9 @@ class HomePage extends StatelessWidget {
         ),
           body: TabBarView(
               children: [
-            TabsWidget(popularProvider),
-            TabsWidget(topProvider),
-            TabsWidget(upcomingProvider),
+            TabsWidget(popularProvider, 'popular'),
+            TabsWidget(topProvider, 'top'),
+            TabsWidget(upcomingProvider, 'upcoming'),
           ])
       ),
     );
