@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/movie.dart';
 import 'package:dartz/dartz.dart';
+
+import '../models/video.dart';
 
 
 
@@ -77,6 +80,24 @@ class MovieService{
     }
   }
 
+
+
+  static Future<List<Video>> getVideoKey({required int movieId}) async{
+    try{
+      final response =  await dio.get('https://api.themoviedb.org/3/movie/$movieId/videos',
+          queryParameters: {
+            'api_key': '2a0f926961d00c667e191a21c14461f8'
+          });
+
+      final newData = (response.data['results'] as List).map((e) => Video.fromJson(e)).toList();
+      return newData;
+    }on DioError catch (err){
+      throw  err.message;
+    }
+  }
+
 }
 
 
+
+final videoProvider = FutureProvider.family((ref, int movieId) => MovieService.getVideoKey(movieId: movieId));

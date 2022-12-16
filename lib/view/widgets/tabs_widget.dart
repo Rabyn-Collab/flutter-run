@@ -4,6 +4,9 @@ import 'package:flutterrun/models/movie_state.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutterrun/providers/movie_provider.dart';
+import 'package:get/get.dart';
+
+import '../detail_page.dart';
 
 class TabsWidget extends StatelessWidget {
 final   provider;
@@ -42,22 +45,29 @@ TabsWidget(this.provider, this.pageKey);
                     ),
                     itemBuilder: (context, index){
                     final movie = movieState.movies[index];
-                      return ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            errorWidget: (c,s,d){
-                              return Image.asset('');
-                            },
-                              placeholder: (context, string){
-                              return Center(
-                                  child: SpinKitFadingCube(
-                                    color: Colors.pinkAccent,
-                                    size: 30,
-                                  )
-                              );
+
+                      return InkWell(
+                        onTap: (){
+                         Get.to(() =>DetailPage(movie), transition: Transition.leftToRight);
+                        },
+                        // splashColor: Colors.purple,
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: CachedNetworkImage(
+                              errorWidget: (c,s,d){
+                                return Image.asset('');
                               },
-                              imageUrl: movie.poster_path
-                          )
+                                placeholder: (context, string){
+                                return Center(
+                                    child: SpinKitFadingCube(
+                                      color: Colors.pinkAccent,
+                                      size: 30,
+                                    )
+                                );
+                                },
+                                imageUrl: movie.poster_path
+                            )
+                        ),
                       );
                     }
                 ),
