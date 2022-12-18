@@ -13,25 +13,38 @@ DetailPage(this.movie);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Consumer(
-          builder: (context, ref, child) {
-            final videoData = ref.watch(videoProvider(movie.id));
-            return ListView(
-              children: [
-                 videoData.when(
-                     data: (data){
-                      return VideoWidget(data[0].key);
-                       // return Column(
-                       //   children: data.map((e) => VideoWidget(e.key)).toList(),
-                       // );
-                     },
-                     error: (err, stack) => Center(child: Text('$err')),
-                     loading: () => Container()
-                 )
-              ],
-            );
-          }
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(image: NetworkImage(movie.backdrop_path), fit: BoxFit.fill, colorFilter: ColorFilter.mode(
+                Colors.black38,
+                BlendMode.darken
+            ))
+          ),
+          child: Consumer(
+            builder: (context, ref, child) {
+              final videoData = ref.watch(videoProvider(movie.id));
+              return ListView(
+                children: [
+                   Container(
+                     height: 250,
+                     child: videoData.when(
+                         data: (data){
+                          return VideoWidget( data.isEmpty ? '': data[0].key);
+                           // return Column(
+                           //   children: data.map((e) => VideoWidget(e.key)).toList(),
+                           // );
+                         },
+                         error: (err, stack) => Center(child: Text('$err')),
+                         loading: () => Container()
+                     ),
+                   ),
+                  Text(movie.title)
 
+                ],
+              );
+            }
+
+          ),
         )
     );
   }
@@ -57,7 +70,7 @@ class _VideoWidgetState extends State<VideoWidget> {
     controller = PodPlayerController(
       playVideoFrom: PlayVideoFrom.youtube('https://youtu.be/${widget.videoKey}'),
       podPlayerConfig: const PodPlayerConfig(
-        autoPlay: false,
+        autoPlay: true,
       ),
     )..initialise();
     super.initState();

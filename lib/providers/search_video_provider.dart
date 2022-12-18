@@ -27,7 +27,12 @@ class SearchProvider extends StateNotifier<MovieState>{
           state = state.copyWith(movieState: state, err: l, isLoad: false);
         },
             (r){
-          state = state.copyWith(movieState: state, err: '', isLoad: false, movies: r);
+              if(r.isEmpty){
+                state = state.copyWith(movieState: state, err: 'try using another keywords', isLoad: false, movies: []);
+              }else{
+                state = state.copyWith(movieState: state, err: '', isLoad: false, movies: r);
+              }
+
         }
     );
 

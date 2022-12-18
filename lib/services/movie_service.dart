@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../exceptions/api_exception.dart';
 import '../models/movie.dart';
 import 'package:dartz/dartz.dart';
 
@@ -20,7 +21,8 @@ class MovieService{
      final newData = (response.data['results'] as List).map((e) => Movie.fromJson(e)).toList();
       return Right(newData);
       }on DioError catch (err){
-      return  Left(err.message);
+        print(err.message);
+      return  Left(DioException.getDioError(err));
       }
   }
 
@@ -35,7 +37,7 @@ class MovieService{
       final newData = (response.data['results'] as List).map((e) => Movie.fromJson(e)).toList();
       return Right(newData);
     }on DioError catch (err){
-      return  Left(err.message);
+      return  Left(DioException.getDioError(err));
     }
   }
 
@@ -53,7 +55,7 @@ class MovieService{
       return Right(newData);
     }on DioError catch (err){
 
-      return  Left(err.message);
+      return  Left(DioException.getDioError(err));
     }
   }
 
@@ -76,7 +78,7 @@ class MovieService{
       return Right(response.data);
     }on DioError catch (err){
 
-      return  Left(err.message);
+      return  Left(DioException.getDioError(err));
     }
   }
 
@@ -92,7 +94,7 @@ class MovieService{
       final newData = (response.data['results'] as List).map((e) => Video.fromJson(e)).toList();
       return newData;
     }on DioError catch (err){
-      throw  err.message;
+      throw  DioException.getDioError(err);
     }
   }
 

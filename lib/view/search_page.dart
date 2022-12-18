@@ -2,8 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
+import 'package:get/get.dart';
 import '../providers/search_video_provider.dart';
+import 'detail_page.dart';
 
 
 
@@ -50,22 +51,27 @@ class SearchPage extends StatelessWidget {
                               ),
                               itemBuilder: (context, index){
                                 final movie = movieState.movies[index];
-                                return ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: CachedNetworkImage(
-                                        errorWidget: (c,s,d){
-                                          return Image.asset('assets/movie.png');
-                                        },
-                                        placeholder: (context, string){
-                                          return Center(
-                                              child: SpinKitFadingCube(
-                                                color: Colors.pinkAccent,
-                                                size: 30,
-                                              )
-                                          );
-                                        },
-                                        imageUrl: movie.poster_path
-                                    )
+                                return InkWell(
+                                  onTap: (){
+                                    Get.to(() =>DetailPage(movie), transition: Transition.leftToRight);
+                                  },
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                          errorWidget: (c,s,d){
+                                            return Image.asset('assets/movie.png');
+                                          },
+                                          placeholder: (context, string){
+                                            return Center(
+                                                child: SpinKitFadingCube(
+                                                  color: Colors.pinkAccent,
+                                                  size: 30,
+                                                )
+                                            );
+                                          },
+                                          imageUrl: movie.poster_path
+                                      )
+                                  ),
                                 );
                               }
                           )  : Text(movieState.err)
