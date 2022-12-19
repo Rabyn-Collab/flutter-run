@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutterrun/api.dart';
 import '../exceptions/api_exception.dart';
 import '../models/movie.dart';
 import 'package:dartz/dartz.dart';
-
+import 'package:hive_flutter/hive_flutter.dart';
 import '../models/video.dart';
 
 
@@ -18,6 +21,15 @@ class MovieService{
              'api_key': '2a0f926961d00c667e191a21c14461f8',
              'page': page
        });
+
+       if(apiPath == Api.popularMovie){
+         final response =  await dio.get(apiPath,
+             queryParameters: {
+               'api_key': '2a0f926961d00c667e191a21c14461f8',
+               'page': 1
+             });
+         Hive.box<String>('movieBox').put('movie', jsonEncode(response.data['results']));
+       }
      final newData = (response.data['results'] as List).map((e) => Movie.fromJson(e)).toList();
       return Right(newData);
       }on DioError catch (err){

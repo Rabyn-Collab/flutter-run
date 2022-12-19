@@ -6,7 +6,7 @@ import 'package:flutterrun/services/movie_service.dart';
 import 'package:flutterrun/view/home_page.dart';
 import 'package:get/get.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:hive_flutter/hive_flutter.dart';
 import 'api.dart';
 
 
@@ -25,6 +25,9 @@ Future<String> delaySome() async{
 
 void main() async{
   await Future.delayed(Duration(milliseconds: 500));
+  await Hive.initFlutter();
+
+  final box = await Hive.openBox<String>('movieBox');
   // print(newState.err);
   // m();
   // print(newState.isLoad);

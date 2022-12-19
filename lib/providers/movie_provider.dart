@@ -58,7 +58,7 @@ class TopProvider extends StateNotifier<MovieState>{
   }
 
   Future<void> getData() async{
-    state = state.copyWith(movieState: state, isLoad: true);
+    state = state.copyWith(movieState: state, isLoad: state.isLoadMore ? false: true);
     final response = await MovieService.getMovieByCategory(apiPath: state.apiPath, page: state.page);
     response.fold(
             (l){
@@ -96,7 +96,7 @@ class UpcomingProvider extends StateNotifier<MovieState>{
   }
 
   Future<void> getData() async{
-    state = state.copyWith(movieState: state, isLoad: true);
+    state = state.copyWith(movieState: state, isLoad: state.isLoadMore ? false: true);
     final response = await MovieService.getMovieByCategory(apiPath: state.apiPath, page: state.page);
     response.fold(
             (l){

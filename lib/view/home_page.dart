@@ -36,6 +36,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           bottom: TabBar(
+            physics: NeverScrollableScrollPhysics(),
             indicator: BoxDecoration(
               color: Colors.pink,
               borderRadius: BorderRadius.circular(20)
@@ -48,6 +49,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
           body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
               children: [
             TabsWidget(popularProvider, 'popular'),
             TabsWidget(topProvider, 'top'),
