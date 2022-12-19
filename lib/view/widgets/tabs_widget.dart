@@ -25,7 +25,6 @@ class TabsWidget extends StatelessWidget {
       child: OfflineBuilder(
           child: Container(),
           connectivityBuilder: (c, connectivity, child) {
-
             final bool connected = connectivity != ConnectivityResult.none;
             return Consumer(
                 builder: (context, ref, child) {
@@ -34,64 +33,6 @@ class TabsWidget extends StatelessWidget {
                     return Center(child: CircularProgressIndicator());
                   } else if (movieState.err.isNotEmpty) {
                     if(movieState.err == 'No Internet.'){
-                        if(movieState.apiPath == Api.popularMovie){
-                            final box =  Hive.box<String>('movieBox');
-                            if(box.isNotEmpty){
-                               final data =jsonDecode(box.get('movie')!);
-                               final newData = (data as List).map((e) => Movie.fromJson(e)).toList();
-                               return NotificationListener(
-                                 onNotification: (ScrollEndNotification onNotification) {
-                                   final before = onNotification.metrics.extentBefore;
-                                   final max = onNotification.metrics.maxScrollExtent;
-                                   if (before == max) {
-                                     ref.read(provider.notifier).loadMore();
-                                   }
-                                   return true;
-                                 },
-                                 child: GridView.builder(
-                                     key: PageStorageKey(pageKey),
-                                     itemCount: newData.length,
-                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                         crossAxisCount: 3,
-                                         childAspectRatio: 2 / 3,
-                                         mainAxisSpacing: 5,
-                                         crossAxisSpacing: 5
-                                     ),
-                                     itemBuilder: (context, index) {
-                                       final movie = newData[index];
-
-                                       return InkWell(
-                                         onTap: () {
-                                           Get.to(() => DetailPage(movie),
-                                               transition: Transition.leftToRight);
-                                         },
-                                         // splashColor: Colors.purple,
-                                         child: ClipRRect(
-                                             borderRadius: BorderRadius.circular(10),
-                                             child: CachedNetworkImage(
-                                                 errorWidget: (c, s, d) {
-                                                   return Image.asset('assets/movie.png');
-                                                 },
-                                                 placeholder: (context, string) {
-                                                   return Center(
-                                                       child: SpinKitFadingCube(
-                                                         color: Colors.pinkAccent,
-                                                         size: 30,
-                                                       )
-                                                   );
-                                                 },
-                                                 imageUrl: movie.poster_path
-                                             )
-                                         ),
-                                       );
-                                     }
-                                 ),
-                               );
-                            }else{
-
-                              return Text('');
-                            }
-                        }else{
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -105,13 +46,10 @@ class TabsWidget extends StatelessWidget {
                               )
                             ],
                           );
-                        }
-
 
                     }else{
                       return Center(child: Text(movieState.err));
                     }
-
                   } else {
                     return NotificationListener(
                       onNotification: (ScrollEndNotification onNotification) {

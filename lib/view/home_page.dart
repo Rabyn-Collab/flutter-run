@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutterrun/view/search_page.dart';
+import 'package:flutterrun/view/widgets/popular_widget.dart';
 import 'package:flutterrun/view/widgets/tabs_widget.dart';
 import 'package:get/get.dart';
 import '../providers/movie_provider.dart';
@@ -51,7 +52,7 @@ class HomePage extends StatelessWidget {
           body: TabBarView(
             physics: NeverScrollableScrollPhysics(),
               children: [
-            TabsWidget(popularProvider, 'popular'),
+            PopularWidget(popularProvider, 'popular'),
             TabsWidget(topProvider, 'top'),
             TabsWidget(upcomingProvider, 'upcoming'),
           ])
