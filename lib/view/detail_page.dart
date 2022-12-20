@@ -12,6 +12,7 @@ DetailPage(this.movie);
 
   @override
   Widget build(BuildContext context) {
+    print(movie.id);
     return Scaffold(
         body: Container(
           decoration: BoxDecoration(

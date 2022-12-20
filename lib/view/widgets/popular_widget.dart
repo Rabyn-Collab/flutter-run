@@ -33,7 +33,7 @@ class PopularWidget extends StatelessWidget {
                   if (box.isNotEmpty) {
                     final data = jsonDecode(box.get('movie')!);
                     final newData =
-                        (data as List).map((e) => Movie.fromJson(e)).toList();
+                    (data as List).map((e) => Movie.fromJson(e)).toList();
                     return _buildNotificationListener(ref, newData);
                   } else {
                     return Center(child: Text(movieState.err));

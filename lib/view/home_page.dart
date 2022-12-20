@@ -60,3 +60,42 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+//
+// import 'package:flutter/material.dart';
+//
+// import '../common_widgets/tile_widget.dart';
+//
+// class HomePage1 extends StatelessWidget {
+//
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         body: SafeArea(
+//           child: Column(
+//             children: [
+//               _buildListTile(Icons.add_chart_outlined, 'hello world', 'lorem2'),
+//               _buildListTile(Icons.account_tree, 'hello world1', 'lorem3'),
+//               _buildListTile(Icons.add_call, 'hello world2', 'lorem4'),
+//               ListTileWidget()
+//             ],
+//           ),
+//         )
+//     );
+//   }
+//
+//   ListTile _buildListTile(IconData icons, String label, String sub) {
+//     return ListTile(
+//       leading: Icon(icons),
+//       title: Text(label),
+//       subtitle: Text(sub),
+//     );
+//   }
+// }
+//
+
+
+
+
+
