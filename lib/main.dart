@@ -11,7 +11,7 @@ import 'firebase_options.dart';
 
 void main() async{
   await Future.delayed(Duration(milliseconds: 500));
-
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -36,7 +36,6 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-     theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       home:  HomePage(),
     );
