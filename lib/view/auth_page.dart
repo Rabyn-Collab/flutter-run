@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutterrun/providers/common_provider.dart';
+import 'package:get/get.dart';
 
 
 
@@ -13,10 +17,12 @@ class AuthPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final isLogin = ref.watch(loginProvider);
+    final image = ref.watch(imageProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Form(
+          // autovalidateMode: AutovalidateMode.always,
           key: _form,
           child: Container(
             padding:  EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -46,8 +52,14 @@ class AuthPage extends ConsumerWidget {
                 TextFormField(
                   controller: mailController,
                   validator: (val){
+                    // final bool emailValid =
+                    // RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    //     .hasMatch(val!);
+                    // print(emailValid);
                     if(val!.isEmpty){
-                      return 'please provide name';
+                      return 'please provide email';
+                    }else if(!RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(val.trim())){
+                      return 'please provide valid email';
                     }
                     return null;
                   },
@@ -60,9 +72,10 @@ class AuthPage extends ConsumerWidget {
                 SizedBox(height: 20,),
                 TextFormField(
                   controller: passController,
+                  // inputFormatters: [LengthLimitingTextInputFormatter(10)],
                   validator: (val){
                     if(val!.isEmpty){
-                      return 'please provide name';
+                      return 'please provide password';
                     }else if(val.length > 20){
                       return 'password character is limit to less than 20';
                     }
@@ -76,23 +89,60 @@ class AuthPage extends ConsumerWidget {
                   ),
                 ),
                 SizedBox(height: 20,),
-                if(!isLogin)    Container(
-                  height: 200,
-                  width: double.infinity,
-                  decoration:  BoxDecoration(
-                    border: Border.all(color: Colors.black)
+                if(!isLogin)    InkWell(
+                  onTap: (){
+                    Get.defaultDialog(
+                      title: 'pick an image',
+                      content: Text('Select image option'),
+                      actions: [
+                        TextButton(
+                            onPressed: (){
+                              Navigator.of(context).pop();
+                          ref.read(imageProvider.notifier).pickImage(true);
+                        }, child: Text('Gallery')),
+                        TextButton(
+                            onPressed: (){
+                              Navigator.of(context).pop();
+                              ref.read(imageProvider.notifier).pickImage(false);
+                            }, child: Text('Camera')),
+                      ]
+                    );
+                  },
+                  child: Container(
+                    height: 200,
+                    width: double.infinity,
+                    decoration:  BoxDecoration(
+                      border: Border.all(color: Colors.black)
+                    ),
+                    child: image == null ? Center(child: Text('please select a image')
+                    ) : Image.file(File(image.path)),
                   ),
-                  child: Center(child: Text('please select a image')),
                 ),
                 SizedBox(height: 20,),
                 ElevatedButton(
                     onPressed: (){
+                      final m = passController.text.trim().replaceAll(RegExp('\\s+'), ' ');
                       _form.currentState!.save();
                       if(_form.currentState!.validate()){
+                        FocusScope.of(context).unfocus();
                         if(isLogin){
-
                         }else{
+                         if(image == null){
+                           Get.defaultDialog(
+                               title: 'pick an image',
+                               content: Text('image is required'),
+                               actions: [
+                                 TextButton(
+                                     onPressed: (){
+                                       Navigator.of(context).pop();
+                                     }, child: Text('Close')),
 
+                               ]
+                           );
+                         }else{
+
+
+                         }
                         }
                       }
 
@@ -104,6 +154,7 @@ class AuthPage extends ConsumerWidget {
                   children: [
                     Text(isLogin ?'Don\'t have an account' : 'Already have an account'),
                     TextButton(onPressed: (){
+                      // _form.currentState!.reset();
                       ref.read(loginProvider.notifier).toggleState();
                     }, child: Text(isLogin ? 'Sign Up' : 'Login'))
                   ],
