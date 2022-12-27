@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -31,5 +32,18 @@ class ImageProvider extends StateNotifier<XFile?>{
   }
 
 
+
+}
+
+
+
+final validateProvider = StateNotifierProvider<ValidateProvider, AutovalidateMode>((ref) => ValidateProvider(AutovalidateMode.disabled));
+
+class ValidateProvider extends StateNotifier< AutovalidateMode>{
+  ValidateProvider(super.state);
+
+  void toggleState(){
+    state = AutovalidateMode.onUserInteraction;
+  }
 
 }

@@ -6,6 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutterrun/providers/common_provider.dart';
 import 'package:get/get.dart';
 
+import '../commons/snack_show.dart';
+import '../providers/auth_provider.dart';
+
 
 
 class AuthPage extends ConsumerWidget {
@@ -16,13 +19,20 @@ class AuthPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    ref.listen(authProvider, (previous, next) {
+      if(next.err.isNotEmpty){
+        SnackShow.showFailure(context, next.err);
+      }
+    });
     final isLogin = ref.watch(loginProvider);
+    final auth = ref.watch(authProvider);
     final image = ref.watch(imageProvider);
+    final mode = ref.watch(validateProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Form(
-          // autovalidateMode: AutovalidateMode.always,
+           autovalidateMode: mode,
           key: _form,
           child: Container(
             padding:  EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -120,12 +130,16 @@ class AuthPage extends ConsumerWidget {
                 ),
                 SizedBox(height: 20,),
                 ElevatedButton(
-                    onPressed: (){
+                    onPressed: auth.isLoad ? null : (){
                       final m = passController.text.trim().replaceAll(RegExp('\\s+'), ' ');
                       _form.currentState!.save();
                       if(_form.currentState!.validate()){
                         FocusScope.of(context).unfocus();
                         if(isLogin){
+                          ref.read(authProvider.notifier).userLogin(
+                              email: mailController.text.trim(),
+                              password: passController.text.trim()
+                          );
                         }else{
                          if(image == null){
                            Get.defaultDialog(
@@ -144,10 +158,12 @@ class AuthPage extends ConsumerWidget {
 
                          }
                         }
+                      }else{
+                        ref.read(validateProvider.notifier).toggleState();
                       }
 
 
-                    }, child: Text(isLogin ? 'Login' : 'Sign Up')),
+                    }, child:auth.isLoad ? Center(child: CircularProgressIndicator()) :Text(isLogin ? 'Login' : 'Sign Up')),
                 SizedBox(height: 20,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
