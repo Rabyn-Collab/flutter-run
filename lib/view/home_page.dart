@@ -3,6 +3,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutterrun/commons/firebase_instances.dart';
 import 'package:flutterrun/services/auth_service.dart';
+import 'package:flutterrun/view/create_page.dart';
+import 'package:get/get.dart';
 
 import '../providers/auth_provider.dart';
 
@@ -13,7 +15,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     FlutterNativeSplash.remove();
-    final userData = ref.watch(userStream);
+    final userData = ref.watch(userStream(uid));
     final allUserData = ref.watch(allUserStream);
     return Scaffold(
       appBar: AppBar(
@@ -30,13 +32,20 @@ class HomePage extends ConsumerWidget {
                       ),
                       child: Container()),
                   ListTile(
-
                     leading: Icon(Icons.person),
                     title: Text(data.firstName!),
                   ),
                   ListTile(
                     leading: Icon(Icons.mail),
                     title: Text(data.metadata!['email']),
+                  ),
+                  ListTile(
+                    onTap: (){
+                      Navigator.of(context).pop();
+                      Get.to(() => AddPage(), transition: Transition.leftToRight);
+                    },
+                    leading: Icon(Icons.exit_to_app),
+                    title: Text('Create Post'),
                   ),
                   ListTile(
                     onTap: (){

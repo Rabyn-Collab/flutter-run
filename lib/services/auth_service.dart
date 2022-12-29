@@ -7,15 +7,14 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../commons/firebase_instances.dart';
 
 
-final userStream = StreamProvider((ref) => AuthService.getSingleUser());
-final allUserStream = StreamProvider((ref) =>FirebaseInstances.firebaseChatCore.users());
+final userStream = StreamProvider.family.autoDispose((ref, String id) => AuthService.getSingleUser(id));
+final allUserStream = StreamProvider.autoDispose((ref) =>FirebaseInstances.firebaseChatCore.users());
 
 class AuthService {
 
- static final uid = FirebaseInstances.firebaseAuth.currentUser!.uid;
 
 
- static Stream<types.User> getSingleUser (){
+ static Stream<types.User> getSingleUser (String uid){
    final data = FirebaseInstances.firebaseCloud.collection('users').doc(uid).snapshots().map((event) {
      final json = event.data() as Map<String, dynamic>;
      return types.User(

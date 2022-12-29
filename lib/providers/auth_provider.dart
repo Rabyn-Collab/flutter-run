@@ -6,7 +6,7 @@ import '../models/authState.dart';
 
 
 
-final authStream = StreamProvider((ref) =>FirebaseInstances.firebaseAuth.authStateChanges());
+final authStream = StreamProvider.autoDispose((ref) =>FirebaseInstances.firebaseAuth.authStateChanges());
 
 
 final authProvider = StateNotifierProvider<AuthProvider, AuthState>(
