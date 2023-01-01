@@ -2,18 +2,44 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../commons/firebase_instances.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/posts.dart';
 
 
+final dataStream = StreamProvider((ref) => CrudService.getData());
 
 class CrudService {
 
 
   static CollectionReference postDb = FirebaseInstances.firebaseCloud.collection('posts');
-  
+
+
+  static Stream<List<Post>> getData (){
+    return postDb.snapshots().map((event){
+      return event.docs.map((e) {
+        final json = e.data() as Map<String, dynamic>;
+        return Post(
+            imageUrl: json['imageUrl'],
+            id: e.id,
+            title: json['title'],
+            userId: json['userId'],
+            detail: json['detail'],
+            comments: (json['comments'] as List).map((e) => Comment.fromJson(e)).toList(),
+            imageId: json['imageId'],
+            like: Like.fromJson(json['like'])
+        );
+      }).toList();
+    });
+  }
+
+
+
+
+
   static Future<Either<String, bool>> postAdd({
     required String title,
     required String detail,
@@ -73,7 +99,7 @@ class CrudService {
         await postDb.doc(id).update({
           'title': title,
           'imageUrl': url,
-          'imageId': imageId,
+          'imageId': newImageId,
           'detail': detail,
         });
       }

@@ -44,8 +44,8 @@ class CrudProvider extends StateNotifier<PostState> {
     required String id,
     String? imageId
   })async{
-    state = state.copyWith(isLoad: true, err: '');
-    final response = await CrudService.postUpdate(title: title, detail: detail, id: id);
+    state = state.copyWith(isLoad: true, err: '', isSuccess: false);
+    final response = await CrudService.postUpdate(title: title, detail: detail, id: id, image: image, imageId: imageId);
     response.fold(
             (l) {
           state = state.copyWith(isLoad: false, err: l, isSuccess: false);

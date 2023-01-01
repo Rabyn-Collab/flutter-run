@@ -7,6 +7,14 @@ class Like{
     required this.like,
     required this.usernames
 });
+
+  factory Like.fromJson(Map<String, dynamic> json){
+    return Like(
+        like: json['likes'],
+        usernames: (json['usernames'] as List).map((e) => e as String).toList()
+    );
+  }
+
 }
 
 
@@ -20,6 +28,15 @@ class Comment{
     required this.username,
     required this.userImage
 });
+
+  factory Comment.fromJson(Map<String, dynamic> json ){
+    return Comment(
+        text: json['text'],
+        username: json['username'],
+        userImage: json['userImage']
+    );
+  }
+
 }
 
 
