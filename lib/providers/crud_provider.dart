@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../models/post_state.dart';
+import '../models/posts.dart';
 import '../services/crud_service.dart';
 
 
@@ -75,6 +76,40 @@ class CrudProvider extends StateNotifier<PostState> {
     );
   }
 
+
+   Future<void> addLike({
+    required String id,
+    required List<String> username,
+    required int oldLikes
+  })async{
+     state = state.copyWith(isLoad: true, err: '');
+     final response = await CrudService.addLike(id: id, username: username, oldLikes: oldLikes);
+     response.fold(
+             (l) {
+           state = state.copyWith(isLoad: false, err: l, isSuccess: false);
+         },
+             (r) {
+           state = state.copyWith(isLoad: false, err: '', isSuccess: true);
+         }
+     );
+  }
+
+
+   Future<void> addComment({
+    required String id,
+    required List<Comment> comments,
+  })async{
+     state = state.copyWith(isLoad: true, err: '');
+     final response = await CrudService.addComment(id: id, comments: comments);
+     response.fold(
+             (l) {
+           state = state.copyWith(isLoad: false, err: l, isSuccess: false);
+         },
+             (r) {
+           state = state.copyWith(isLoad: false, err: '', isSuccess: true);
+         }
+     );
+  }
 
 
 

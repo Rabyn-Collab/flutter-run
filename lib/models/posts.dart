@@ -37,6 +37,14 @@ class Comment{
     );
   }
 
+  Map<String, dynamic> toJson(){
+    return {
+      'text': this.text,
+      'username': this.username,
+      'userImage': this.userImage
+    };
+  }
+
 }
 
 

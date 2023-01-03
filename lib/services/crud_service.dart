@@ -19,7 +19,8 @@ class CrudService {
 
 
   static Stream<List<Post>> getData (){
-    return postDb.snapshots().map((event){
+    // final data = postDb.where('title',isEqualTo: 'sample' ).snapshots();
+    return  postDb.snapshots().map((event){
       return event.docs.map((e) {
         final json = e.data() as Map<String, dynamic>;
         return Post(
@@ -125,7 +126,39 @@ class CrudService {
     }
   }
 
+  static Future<Either<String, bool>> addLike({
+    required String id,
+    required List<String> username,
+    required int oldLikes
+  })async{
+    try{
+       await postDb.doc(id).update({
+         'like': {
+           'likes': oldLikes + 1,
+           'usernames': FieldValue.arrayUnion(username)
+         }
+       });
+      return Right(true);
+    }on FirebaseAuthException catch (err){
+      return  Left('${err.message}');
+    }
+  }
 
 
+
+
+  static Future<Either<String, bool>> addComment({
+    required String id,
+    required List<Comment> comments,
+  })async{
+    try{
+      await postDb.doc(id).update({
+        'comments': FieldValue.arrayUnion(comments.map((e) => e.toJson()).toList())
+      });
+      return Right(true);
+    }on FirebaseAuthException catch (err){
+      return  Left('${err.message}');
+    }
+  }
 
 }
