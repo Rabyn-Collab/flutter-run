@@ -20,8 +20,6 @@ final imageProvider = StateNotifierProvider.autoDispose<ImageProvider, XFile?>((
 class ImageProvider extends StateNotifier<XFile?>{
   ImageProvider(super.state);
 
-
-
   void pickImage(bool isGallery) async{
     final ImagePicker _picker = ImagePicker();
      if(isGallery){

@@ -7,20 +7,18 @@ import 'package:flutterrun/providers/crud_provider.dart';
 import '../services/crud_service.dart';
 
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends ConsumerWidget {
  final Post post;
  final types.User user;
 
  DetailPage(this.post, this.user);
 final text = TextEditingController();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final postData = ref.watch(dataStream);
     return Scaffold(
       resizeToAvoidBottomInset: false,  
-        body: Consumer(
-          builder: (context, ref, child) {
-            final postData = ref.watch(dataStream);
-            return Column(
+        body: Column(
               children: [
                 Image.network(post.imageUrl, height: 390,),
                 Padding(
@@ -54,36 +52,34 @@ final text = TextEditingController();
                   ),
                 ),
 
-                postData.when(
-                    data: (data){
-                      final currentPost = data.firstWhere((element) => element.id == post.id);
-                      return  Expanded(
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: currentPost.comments.length,
-                              itemBuilder: (context, index){
-                                final comment = currentPost.comments[index];
-                                return Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ListTile(
-                                      leading: Image.network(comment.userImage),
-                                      title: Text(comment.username),
-                                      subtitle: Text(comment.text),
-                                    )
-                                  ),
-                                );
-                              }
-                          )
-                      );
-                    },
-                    error: (err, stack) => Text('$err'),
-                    loading: () => Center(child: CircularProgressIndicator())
+                Expanded(
+                  child: postData.when(
+                      data: (data){
+                        final currentPost = data.firstWhere((element) => element.id == post.id);
+                        return  ListView.builder(
+                            itemCount: currentPost.comments.length,
+                            itemBuilder: (context, index){
+                              final comment = currentPost.comments[index];
+                              return Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ListTile(
+                                    leading: Image.network(comment.userImage),
+                                    title: Text(comment.username),
+                                    subtitle: Text(comment.text),
+                                  )
+                                ),
+                              );
+                            }
+                        );
+                      },
+                      error: (err, stack) => Text('$err'),
+                      loading: () => Center(child: CircularProgressIndicator())
+                  ),
                 )
 
               ],
-            );
-          }
+
         )
     );
   }
