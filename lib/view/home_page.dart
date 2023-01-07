@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,16 +13,83 @@ import 'package:flutterrun/view/user_detail.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../commons/snack_show.dart';
+import '../notification_service.dart';
 import '../providers/auth_provider.dart';
 import 'detail_page.dart';
 
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget{
 
-  final uid = FirebaseInstances.firebaseAuth.currentUser!.uid;
-  late types.User user;
   @override
-  Widget build(BuildContext context, ref) {
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  final uid = FirebaseInstances.firebaseAuth.currentUser!.uid;
+
+  late types.User user;
+
+
+  @override
+  void initState() {
+
+
+    // 1. This method call when app in terminated state and you get a notification
+    // when you click on notification app open from terminated state and you can get notification data in this method
+
+    FirebaseMessaging.instance.getInitialMessage().then(
+          (message) {
+        print("FirebaseMessaging.instance.getInitialMessage");
+        if (message != null) {
+          print("New Notification");
+          // if (message.data['_id'] != null) {
+          //   Navigator.of(context).push(
+          //     MaterialPageRoute(
+          //       builder: (context) => DemoScreen(
+          //         id: message.data['_id'],
+          //       ),
+          //     ),
+          //   );
+          // }
+          LocalNotificationService.createanddisplaynotification(message);
+        }
+      },
+    );
+
+    // 2. This method only call when App in forground it mean app must be opened
+    FirebaseMessaging.onMessage.listen(
+          (message) {
+        print("FirebaseMessaging.onMessage.listen");
+        if (message.notification != null) {
+          print(message.notification!.title);
+          print(message.notification!.body);
+          print("message.data11 ${message.data}");
+          LocalNotificationService.createanddisplaynotification(message);
+
+        }
+      },
+    );
+
+    // 3. This method only call when App in background and not terminated(not closed)
+    FirebaseMessaging.onMessageOpenedApp.listen(
+          (message) {
+        print("FirebaseMessaging.onMessageOpenedApp.listen");
+        if (message.notification != null) {
+
+          LocalNotificationService.createanddisplaynotification(message);
+        }
+      },
+    );
+
+    super.initState();
+  }
+
+
+
+
+
+  @override
+  Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
     final userData = ref.watch(userStream(uid));
     final allUserData = ref.watch(allUserStream);

@@ -43,7 +43,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                  setState(() {
                    isLoad = true;
                  });
-                 final ref = FirebaseInstances.firebaseStorage.ref().child('chtImages/${image.name}');
+                 final ref = FirebaseInstances.firebaseStorage.ref().child('chatImages/${image.name}');
                  await ref.putFile(File(image.path));
                  final url = await ref.getDownloadURL();
                  final length = File(image.path).lengthSync();
