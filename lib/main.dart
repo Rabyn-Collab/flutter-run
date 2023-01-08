@@ -37,8 +37,7 @@ void main() async{
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-final token = await FirebaseMessaging.instance.getToken();
-print(token);
+
   runApp(ProviderScope(
       child: Home()
   )

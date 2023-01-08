@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutterrun/view/chat_page.dart';
 import 'package:get/get.dart';
+import '../commons/firebase_instances.dart';
 import '../providers/room_provider.dart';
 import '../services/crud_service.dart';
 
@@ -12,7 +13,7 @@ import '../services/crud_service.dart';
 class UserDetail extends ConsumerWidget {
  final  types.User user;
  UserDetail(this.user);
-
+ final userId = FirebaseInstances.firebaseAuth.currentUser!.uid;
   @override
   Widget build(BuildContext context, ref) {
     final postData = ref.watch(dataStream);
@@ -39,7 +40,9 @@ class UserDetail extends ConsumerWidget {
                               onPressed: () async{
                              final response = await ref.read(roomProvider).roomCreate(user);
                              if(response != null){
-                               Get.to(() => ChatPage(response), transition: Transition.leftToRight);
+                               final otherUser = response.users.firstWhere((element) => element.id !=userId);
+                               final currentUser = response.users.firstWhere((element) => element.id == userId);
+                               Get.to(() => ChatPage(response, currentUser.firstName!, otherUser.metadata!['token']), transition: Transition.leftToRight);
                              }
                               }, child: Text('Start Chat'))
                         ],

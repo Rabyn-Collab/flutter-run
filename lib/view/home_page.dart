@@ -9,6 +9,7 @@ import 'package:flutterrun/services/crud_service.dart';
 import 'package:flutterrun/view/create_page.dart';
 import 'package:flutterrun/view/edit_page.dart';
 import 'package:flutterrun/view/recent_chats.dart';
+import 'package:flutterrun/view/sample_page.dart';
 import 'package:flutterrun/view/user_detail.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -42,6 +43,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         print("FirebaseMessaging.instance.getInitialMessage");
         if (message != null) {
           print("New Notification");
+
           // if (message.data['_id'] != null) {
           //   Navigator.of(context).push(
           //     MaterialPageRoute(
@@ -56,7 +58,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       },
     );
 
-    // 2. This method only call when App in forground it mean app must be opened
+    // 2. This method only call when App in foreground it mean app must be opened
     FirebaseMessaging.onMessage.listen(
           (message) {
         print("FirebaseMessaging.onMessage.listen");
@@ -65,7 +67,6 @@ class _HomePageState extends ConsumerState<HomePage> {
           print(message.notification!.body);
           print("message.data11 ${message.data}");
           LocalNotificationService.createanddisplaynotification(message);
-
         }
       },
     );
@@ -75,7 +76,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           (message) {
         print("FirebaseMessaging.onMessageOpenedApp.listen");
         if (message.notification != null) {
-
+         // Get.to(() => SamplePage());
           LocalNotificationService.createanddisplaynotification(message);
         }
       },
